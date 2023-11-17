@@ -1,14 +1,30 @@
-This is a personal store made with Next Js
+# Next.js MyShop
+Para correr localmente, se necesita la base de datos.
+```
+docker-compose up -d
+```
 
-## Getting Started
+* El -d, significa __detached__
 
-First, run the development server:
 
-```bash
+
+## Configurar las variables de entorno
+Renombrar el archivo __.env.template__ a __.env__
+* MongoDB URL Local:
+```
+MONGO_URL=mongodb://localhost:27017/myshopdb
+```
+
+* Reconstruir los módulos de node y levantar Next
+```
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Llenar la base de datos con información de pruebas
 
+Llamara:
+```
+http://localhost:3000/api/seed
+```

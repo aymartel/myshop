@@ -8,7 +8,7 @@ export const Navbar = () => {
     <AppBar>
         <Toolbar>
                 <Link href='/' display='flex' alignItems='center'>
-                    <Typography variant='h6'>Teslo |</Typography>
+                    <Typography variant='h6'>My |</Typography>
                     <Typography sx={{ ml: 0.5 }}>Shop</Typography>
                 </Link>  
 
