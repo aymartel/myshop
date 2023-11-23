@@ -1,11 +1,14 @@
 import { FC, useReducer, useEffect } from 'react';
-import { AuthContext, authReducer } from './';
+import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
+
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+import { AuthContext, authReducer } from './';
+
 import { myshopApi } from '../../api';
 import { IUser } from '../../interfaces';
-import { useRouter } from 'next/router';
 
 export interface AuthState {
     isLoggedIn: boolean;
@@ -22,16 +25,30 @@ const AUTH_INITIAL_STATE: AuthState = {
 export const AuthProvider:FC<any> = ({ children }) => {
 
     const [state, dispatch] = useReducer( authReducer, AUTH_INITIAL_STATE );
+    const { data, status } = useSession();
     const router = useRouter();
 
     useEffect(() => {
-        checkToken();
-    }, [])
+        
+        if ( status === 'authenticated' ) {
+            console.log({user: data?.user});
+            dispatch({ type: '[Auth] - Login', payload: data?.user as IUser })
+        }
+    
+    }, [ status, data ])
+    
+
+
+    // useEffect(() => {
+    //     checkToken();
+    // }, [])
 
     const checkToken = async() => {
-        if (!Cookies.get('token')) {
+
+        if ( !Cookies.get('token') ) {
             return;
         }
+
         try {
             const { data } = await myshopApi.get('/user/validate-token');
             const { token, user } = data;
@@ -84,10 +101,21 @@ export const AuthProvider:FC<any> = ({ children }) => {
         }
     }
 
+
     const logout = () => {
-        Cookies.remove('token');
         Cookies.remove('cart');
-        router.reload();
+        Cookies.remove('firstName');
+        Cookies.remove('lastName');
+        Cookies.remove('address');
+        Cookies.remove('address2');
+        Cookies.remove('zip');
+        Cookies.remove('city');
+        Cookies.remove('country');
+        Cookies.remove('phone');
+        
+        signOut();
+        // router.reload();
+        // Cookies.remove('token');
     }
 
 
@@ -99,8 +127,7 @@ export const AuthProvider:FC<any> = ({ children }) => {
             // Methods
             loginUser,
             registerUser,
-            logout
-
+            logout,
         }}>
             { children }
         </AuthContext.Provider>

@@ -1,89 +1,84 @@
-
-
-export const countries: {
-    name: string;
-    code: string;
-}[] = [{
-    name: 'Costa Rica',
+export const countries = [{
+    name:'Costa Rica',
     code: 'CRI'
 },
 {
-    name: 'Argentina',
+    name:'Argentina',
     code: 'ARG'
 },
 {
-    name: 'Venezuela',
+    name:'Venezuela',
     code: 'VEN'
 },
 {
-    name: 'Guatemala',
+    name:'Guatemala',
     code: 'GTM'
 },
 {
-    name: 'Mexico',
+    name:'Mexico',
     code: 'MEX'
 },
 {
-    name: 'Belice',
+    name:'Belice',
     code: 'BLZ'
 },
 {
-    name: 'Puerto Rico',
+    name:'Puerto Rico',
     code: 'PRI'
 },
 {
-    name: 'Ecuador',
+    name:'Ecuador',
     code: 'ECU'
 },
 {
-    name: 'Panamá',
+    name:'Panamá',
     code: 'PAN'
 },
 {
-    name: 'Honduras',
+    name:'Honduras',
     code: 'HND'
 },
 {
-    name: 'Bolivia',
+    name:'Bolivia',
     code: 'BOL'
 },
 {
-    name: 'El Salvador',
+    name:'El Salvador',
     code: 'SLV'
 },
 {
-    name: 'Peru',
+    name:'Peru',
     code: 'PER'
 },
 {
-    name: 'Uruguay',
+    name:'Uruguay',
     code: 'URY'
 },
 {
-    name: 'Colombia',
+    name:'Colombia',
     code: 'COL'
 },
 {
-    name: 'Republica Dominicana',
+    name:'Republica Dominicana',
     code: 'DOM'
 },
 {
-    name: 'España',
+    name:'España',
     code: 'ESP'
 },
 {
-    name: 'Paraguay',
+    name:'Paraguay',
     code: 'PRY'
 },
 {
-    name: 'Chile',
+    name:'Chile',
     code: 'CHL'
 },
 {
-    name: 'Cuba',
+    name:'Cuba',
     code: 'CUB'
 },
 {
-    name: 'Nicaragua',
+    name:'Nicaragua',
     code: 'NIC'
-}];
+}]

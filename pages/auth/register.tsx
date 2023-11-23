@@ -1,9 +1,13 @@
 import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { Box, Button, Chip, Grid, TextField, Typography } from '@mui/material';
-import { ErrorOutline } from '@mui/icons-material';
+import { GetServerSideProps } from 'next';
+
+import NextLink from 'next/link';
+import { signIn, getSession } from 'next-auth/react';
+
 import { useForm } from 'react-hook-form';
+import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
 
 import { AuthContext } from '../../context';
 import { AuthLayout } from '../../components/layouts'
@@ -40,12 +44,15 @@ const RegisterPage = () => {
         }
         
         // Todo: navegar a la pantalla que el usuario estaba
-        router.replace('/');
+        // const destination = router.query.p?.toString() || '/';
+        // router.replace(destination);
+
+        await signIn('credentials',{ email, password });
 
     }
 
     return (
-        <AuthLayout title={'Registrarse'}>
+        <AuthLayout title={'Ingresar'}>
             <form onSubmit={ handleSubmit(onRegisterForm) } noValidate>
                 <Box sx={{ width: 350, padding:'10px 20px' }}>
                     <Grid container spacing={2}>
@@ -116,16 +123,44 @@ const RegisterPage = () => {
                         </Grid>
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
-                           
-                                <Link  href={ router.query.p ? `/auth/login?p=${ router.query.p }`: '/auth/login' } >
+                            <NextLink 
+                                href={ router.query.p ? `/auth/login?p=${ router.query.p }`: '/auth/login' } 
+                                passHref legacyBehavior
+                            >
+                                <Link underline='always'>
                                     ¿Ya tienes cuenta?
                                 </Link>
+                            </NextLink>
                         </Grid>
                     </Grid>
                 </Box>
             </form>
         </AuthLayout>
     )
+}
+
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    
+    const session = await getSession({ req });
+    // console.log({session});
+
+    const { p = '/' } = query;
+
+    if ( session ) {
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+
+
+    return {
+        props: { }
+    }
 }
 
 export default RegisterPage
