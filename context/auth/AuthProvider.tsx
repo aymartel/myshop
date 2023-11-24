@@ -7,7 +7,7 @@ import axios from 'axios';
 
 import { AuthContext, authReducer } from './';
 
-import { myshopApi } from '../../api';
+import { myshopApi } from '../../myshopApi';
 import { IUser } from '../../interfaces';
 
 export interface AuthState {
