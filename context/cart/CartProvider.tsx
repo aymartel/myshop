@@ -1,9 +1,11 @@
-import { FC, useEffect, useReducer } from 'react';
+import { FC, useEffect, useReducer, useState } from 'react';
 import Cookie from 'js-cookie';
+import axios from 'axios';
 
 
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, IOrder, ShippingAddress } from '../../interfaces';
 import { CartContext, cartReducer } from './';
+import { myshopApi } from '../../api';
 
 export interface CartState {
     isLoaded: boolean;
@@ -16,16 +18,6 @@ export interface CartState {
     shippingAddress?: ShippingAddress;
 }
 
-export interface ShippingAddress {
-    firstName: string;
-    lastName: string;
-    address: string;
-    address2?: string;
-    zip: string;
-    city: string;
-    country: string;
-    phone: string;
-}
 
 
 const CART_INITIAL_STATE: CartState = {
@@ -73,12 +65,40 @@ export const CartProvider: FC<any> = ({ children }) => {
     }, [])
 
 
+    //-------------------------------------
+    const [isMounted, setIsMounted] = useState(false);
+
 
 
     useEffect(() => {
-        if (state.cart.length > 0)
-            Cookie.set('cart', JSON.stringify(state.cart));
-    }, [state.cart]);
+
+        if (!isMounted) {
+
+            const cart = JSON.parse(Cookie.get("cart") ?? "[]");
+
+            dispatch({
+
+                type: "[Cart] - LoadCart from cookies | storage",
+
+                payload: cart,
+
+            });
+
+            setIsMounted(true);
+
+        }
+
+    }, [isMounted]);
+
+
+
+    useEffect(() => {
+
+        if (isMounted) Cookie.set("cart", JSON.stringify(state.cart));
+
+    }, [state.cart, isMounted]);
+
+
 
 
     useEffect(() => {
@@ -150,6 +170,54 @@ export const CartProvider: FC<any> = ({ children }) => {
     }
 
 
+    const createOrder = async (): Promise<{ hasError: boolean; message: string; }> => {
+
+        if (!state.shippingAddress) {
+            throw new Error('No hay dirección de entrega');
+        }
+
+        const body: IOrder = {
+            orderItems: state.cart.map(p => ({
+                ...p,
+                size: p.size!
+            })),
+            shippingAddress: state.shippingAddress,
+            numberOfItems: state.numberOfItems,
+            subTotal: state.subTotal,
+            tax: state.tax,
+            total: state.total,
+            isPaid: false
+        }
+
+
+        try {
+
+            const { data } = await myshopApi.post<IOrder>('/orders', body);
+
+            dispatch({ type: '[Cart] - Order complete' });
+
+            return {
+                hasError: false,
+                message: data._id!
+            }
+
+
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return {
+                    hasError: true,
+                    message: error.response?.data.message
+                }
+            }
+            return {
+                hasError: true,
+                message: 'Error no controlado, hable con el administrador'
+            }
+        }
+
+    }
+
+
     return (
         <CartContext.Provider value={{
             ...state,
@@ -159,6 +227,9 @@ export const CartProvider: FC<any> = ({ children }) => {
             removeCartProduct,
             updateCartQuantity,
             updateAddress,
+
+            // Orders
+            createOrder,
         }}>
             {children}
         </CartContext.Provider>

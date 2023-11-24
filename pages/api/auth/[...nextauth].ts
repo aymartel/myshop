@@ -1,10 +1,11 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from 'next-auth'
 
 import { dbUsers } from '../../../database';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
 
@@ -77,15 +78,15 @@ export default NextAuth({
 
 
     async session({ session, token, user }){
-      // console.log({ session, token, user });
 
       session.accessToken = token.accessToken;
       session.user = token.user as any;
-
       return session;
     }
     
 
   }
 
-});
+};
+
+export default NextAuth(authOptions);
