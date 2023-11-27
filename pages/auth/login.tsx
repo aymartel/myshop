@@ -38,8 +38,13 @@ const LoginPage = () => {
 
 
     const onLoginUser = async( { email, password }: FormData ) => {
-
-        setShowError(false);
+        const res = await signIn('credentials',{ redirect:false, email, password })
+        if (res.ok) {
+            router.reload()
+        } else {
+            setShowError(true);
+        }
+        
 
         // const isValidLogin = await loginUser( email, password );
         // if ( !isValidLogin ) {
@@ -50,7 +55,6 @@ const LoginPage = () => {
         // // Todo: navegar a la pantalla que el usuario estaba
         // const destination = router.query.p?.toString() || '/';
         // router.replace(destination);
-        await signIn('credentials',{ email, password });
 
     }
 
