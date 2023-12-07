@@ -16,7 +16,7 @@ const WomenPage: NextPage = () => {
 
 
   return (
-    <ShopLayout title={'Teslo-Shop - Women'} pageDescription={'Encuentra los mejores productos de Teslo para ellas'}>
+    <ShopLayout title={'MyShop - Women'} pageDescription={'Encuentra los mejores productos de MyShop para ellas'}>
         <Typography variant='h1' component='h1'>Mujeres</Typography>
         <Typography variant='h2' sx={{ mb: 1 }}>Productos para ellas</Typography>
 
