@@ -92,7 +92,7 @@ const updateProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => 
             }
         });
 
-        await product.update( req.body );
+        // await product.update( req.body );
         await db.disconnect();
         
 
