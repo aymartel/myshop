@@ -45,7 +45,7 @@ const getProducts = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     // TODO:
     const updatedProducts = products.map( product => {
         product.images = product.images.map( image => {
-            return `${ process.env.HOST_NAME}/products/${ image }`
+            return `${ process.env.HOST_NAME}products/${ image }`
         });
 
         return product;
