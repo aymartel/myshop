@@ -1,30 +1,38 @@
-# Next.js MyShop
-Para correr localmente, se necesita la base de datos.
+# MyShop - Online Store inspired by Tesla
+
+MyShop is an online store developed with NextJS, MongoDB, Node, and MaterialUI, inspired by the design of the official Tesla store.
+### Technologies used:
+- NextJS
+- MongoDB
+- Node
+- MaterialUI
+
+## To run locally, you need the database.
 ```
 docker-compose up -d
 ```
 
-* El -d, significa __detached__
+* The -d means __detached__
 
 
 
 ## Configurar las variables de entorno
-Renombrar el archivo __.env.template__ a __.env__
+Rename the file __.env.template__ a __.env__
 * MongoDB URL Local:
 ```
 MONGO_URL=mongodb://localhost:27017/myshopdb
 ```
 
-* Reconstruir los módulos de node y levantar Next
+* Rebuild the node modules and build Next
 ```
 yarn install
 yarn dev
 ```
 
 
-## Llenar la base de datos con información de pruebas
+## Fill the database with testing information
 
-Llamara:
+Call!
 ```
 http://localhost:3000/api/seed
 ```
